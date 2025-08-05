@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerMovment : MonoBehaviour
 {
@@ -6,6 +8,11 @@ public class PlayerMovment : MonoBehaviour
     private float speed = 5f;
     [SerializeField]
     private float gravity = -10f;
+    [SerializeField]
+    private float momentum = 5f;
+
+
+    [SerializeField] private Transform cameraTransform;
 
     private CharacterController characterController;
     private Vector2 inputVector;
@@ -15,13 +22,14 @@ public class PlayerMovment : MonoBehaviour
     [SerializeField]
     private Animator camAni;
 
-  
 
-    void Start()
+
+
+    void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
-
+  
     void Update()
     {
         GetInput();
@@ -32,18 +40,18 @@ public class PlayerMovment : MonoBehaviour
 
     void GetInput()
     {
-        inputVector = Vector2.zero;
+    
+        Vector2 rawInput = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W))
-            inputVector.y = 1;
-        if (Input.GetKey(KeyCode.S))
-            inputVector.y = -1;
-        if (Input.GetKey(KeyCode.A))
-            inputVector.x = -1;
-        if (Input.GetKey(KeyCode.D))
-            inputVector.x = 1;
+        if (Input.GetKey(KeyCode.W)) rawInput.y += 1;
+        if (Input.GetKey(KeyCode.S)) rawInput.y -= 1;
+        if (Input.GetKey(KeyCode.A)) rawInput.x -= 1;
+        if (Input.GetKey(KeyCode.D)) rawInput.x += 1;
 
-        inputVector = inputVector.normalized;
+        rawInput = rawInput.normalized;
+
+       
+        inputVector = Vector2.Lerp(inputVector, rawInput, momentum * Time.deltaTime);
     }
 
     void MovePlayer()
@@ -58,10 +66,26 @@ public class PlayerMovment : MonoBehaviour
             verticalVelocity += gravity * Time.deltaTime;
         }
 
-        
-        Vector3 moveDirection = new Vector3(inputVector.x, verticalVelocity, inputVector.y);
+
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
+
+      
+        Vector3 horizontalMove = forward * inputVector.y + right * inputVector.x;
+
+       
+        Vector3 moveDirection = horizontalMove * speed;
+        moveDirection.y = verticalVelocity;
+
+       
+        characterController.Move(moveDirection * Time.deltaTime);
+
+      
         isWalking = inputVector != Vector2.zero;
-        characterController.Move(moveDirection * speed * Time.deltaTime);
     }
 
     public bool IsWalking()
