@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
     protected BoxCollider weaponCollider;
 
@@ -34,13 +34,13 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger entered by: " + other.name);
+
 
         Enemy enemy = other.GetComponentInParent<Enemy>();
 
         if (enemy != null)
         {
-            Debug.Log("Enemy detected: " + enemy.name);
+
 
             if (EnemyManager.Instance != null)
             {
@@ -55,13 +55,13 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger exited by: " + other.name);
+
 
         Enemy enemy = other.GetComponentInParent<Enemy>();
 
         if (enemy != null)
         {
-            Debug.Log("Enemy exited: " + enemy.name);
+
 
             if (EnemyManager.Instance != null)
             {
@@ -75,6 +75,7 @@ public abstract class Weapon : MonoBehaviour
     }
 
 
-    public abstract void Fire();
-
+    public virtual void Fire() { }
+    
+        
 }

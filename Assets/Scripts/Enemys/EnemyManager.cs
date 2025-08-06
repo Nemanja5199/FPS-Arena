@@ -26,7 +26,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         enemies.Add(enemy);
-        Debug.Log($"Enemy added: {enemy.name}");
+       
     }
 
     public void RemoveEnemy(Enemy enemy)
@@ -38,6 +38,6 @@ public class EnemyManager : MonoBehaviour
         }
 
         enemies.Remove(enemy);
-        Debug.Log($"Enemy removed: {enemy.name}");
+       
     }
 }
