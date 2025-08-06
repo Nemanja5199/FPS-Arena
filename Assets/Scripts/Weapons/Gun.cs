@@ -7,8 +7,13 @@ public class Gun : Weapon
     private float gunRange = 20f;
     [SerializeField]
     private float gunVerticalRange = 20f;
+    [SerializeField]
+    private float firerate = 0.5f;
+    [SerializeField]
+    private float damage = 2f;
 
-
+    private float nextFireTime = 0f;
+    private BoxCollider gunCollider;
     protected override void Start()
     {
         range = gunRange;
@@ -23,19 +28,23 @@ public class Gun : Weapon
 
         range = gunRange;
         verticalRange = gunVerticalRange;
-
         base.Update();
+
+        if (Input.GetMouseButtonDown(0) && Time.time > nextFireTime)
+        {
+            Fire();
+        }
     }
-      
 
-        //private void OnTriggerEnter(Collider other)
-        //{
-
-        //}
-
-
-        //private void OnTriggerExit(Collider other)
-        //{
-
-        //}
+    public override void Fire()
+    {
+        foreach(var enemy in EnemyManager.Instance.Enemies)
+        {
+            enemy.TakeDamage(damage);
+        }
+        
+        nextFireTime = Time.time + firerate;
     }
+
+   
+}
