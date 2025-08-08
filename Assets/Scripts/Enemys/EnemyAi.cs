@@ -7,6 +7,8 @@ public class EnemyAi : MonoBehaviour
     private Material aggroMat;
     [SerializeField]
     private Material normalMat;
+    [SerializeField]
+    private float attackRange = 3f;
 
     public bool isAggro = false;
     private Transform playersTransform;
@@ -21,6 +23,13 @@ public class EnemyAi : MonoBehaviour
         playersTransform = FindFirstObjectByType<PlayerMovment>()?.transform;
         enemyNavMeshAgent = GetComponent<NavMeshAgent>();
         meshRenderer = GetComponent<MeshRenderer>();
+
+
+        enemyNavMeshAgent.stoppingDistance = attackRange;
+
+        enemyNavMeshAgent.radius = 2f; 
+        enemyNavMeshAgent.avoidancePriority = Random.Range(40, 60); 
+        enemyNavMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
 
         if (normalMat == null)
             normalMat = meshRenderer.material;
