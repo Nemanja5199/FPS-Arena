@@ -12,10 +12,21 @@ public class Gun : Weapon
     private float bigDamage = 2f;
     [SerializeField]
     private float smallDamage = 1f;
+    private float nextFireTime = 0f;
+    [SerializeField]
+    private float gunShootRadius = 20f;
+
+
     [SerializeField]
     private LayerMask raycastLayerMask;
 
-    private float nextFireTime = 0f;
+    [SerializeField]
+    private LayerMask enemyLayerMask;
+    
+
+
+
+
 
     protected override void Start()
     {
@@ -38,6 +49,18 @@ public class Gun : Weapon
 
     public override void Fire()
     {
+
+        Collider[] enemyColliders;
+        enemyColliders = Physics.OverlapSphere(transform.position, gunShootRadius, enemyLayerMask);
+
+        foreach(var enemyColider in enemyColliders)
+        {
+            enemyColider.GetComponent<EnemyAi>().isAggro = true;
+        }
+
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().Play();
+
         foreach (var enemy in EnemyManager.Instance.Enemies)
         {
             var dir = (enemy.transform.position - transform.position).normalized;

@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
 {
 
     private float enemyHealth = 2f;
+    [SerializeField]
+    private GameObject gunhitEffect;
     void Start()
     {
         
@@ -24,11 +26,13 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-               enemyHealth -= damage;
-        Debug.Log($"Enemy {name} took {damage} damage. Remaining health: {enemyHealth}");
-        if (enemyHealth <= 0)
+        if (gunhitEffect != null)
         {
-           
+            Instantiate(gunhitEffect, transform.position, Quaternion.identity);
         }
+        enemyHealth -= damage;
+        Debug.Log($"Enemy {name} took {damage} damage. Remaining health: {enemyHealth}");
+       
+
     }
 }

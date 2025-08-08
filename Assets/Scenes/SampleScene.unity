@@ -274,6 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 0
   verticalRange: 0
+  BoxWidth: 2
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,6 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
 --- !u!54 &555513004
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -965,7 +967,7 @@ GameObject:
   - component: {fileID: 763972300}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1134,6 +1136,7 @@ GameObject:
   - component: {fileID: 1006835590}
   - component: {fileID: 1006835591}
   - component: {fileID: 1006835592}
+  - component: {fileID: 1006835593}
   m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
@@ -1175,7 +1178,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1006835592
 MonoBehaviour:
@@ -1189,8 +1192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc14b62ac9778f4dbfdf369f797209b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5.05
-  verticalRange: 2.41
+  range: 20
+  verticalRange: 20
+  BoxWidth: 1.5
   gunRange: 20
   gunVerticalRange: 20
   firerate: 1
@@ -1199,6 +1203,103 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!82 &1006835593
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006835589}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 9d2a5c9809722c545bffef318ef3b0c2, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.475
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1330094155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,6 +1368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
 --- !u!54 &1408857808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1593,7 +1695,9 @@ GameObject:
   - component: {fileID: 1889278936}
   - component: {fileID: 1889278935}
   - component: {fileID: 1889278934}
+  - component: {fileID: 1889278940}
   - component: {fileID: 1889278933}
+  - component: {fileID: 1889278939}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1613,6 +1717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
 --- !u!54 &1889278934
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1731,6 +1836,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1889278939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889278932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f98eb5d4320b084caa7d50d59644119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agroMat: {fileID: 2100000, guid: bdeb3f3b2679d2449a5077b4c0834238, type: 2}
+--- !u!135 &1889278940
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889278932}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2142121862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,6 +1903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
 --- !u!54 &2142121864
 Rigidbody:
   m_ObjectHideFlags: 0

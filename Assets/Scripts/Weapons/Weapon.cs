@@ -5,9 +5,11 @@ public class Weapon : MonoBehaviour
     protected BoxCollider weaponCollider;
 
     [SerializeField]
-    protected float range;
+    protected float range=20f;
     [SerializeField]
-    protected float verticalRange;
+    protected float verticalRange = 20f;
+    [SerializeField]
+    protected float BoxWidth = 2f;
 
 
     protected virtual void Start()
@@ -25,7 +27,7 @@ public class Weapon : MonoBehaviour
     {
         if (weaponCollider != null)
         {
-            weaponCollider.size = new Vector3(1, verticalRange, range);
+            weaponCollider.size = new Vector3(BoxWidth, verticalRange, range);
             weaponCollider.center = new Vector3(0, 0, range / 2);
         }
     }
