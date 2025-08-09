@@ -3,33 +3,33 @@ using UnityEngine.AI;
 
 public class EnemyAi : MonoBehaviour
 {
-    [SerializeField]
-    private Material aggroMat;
-    [SerializeField]
-    private Material normalMat;
+  
     [SerializeField]
     private float attackRange = 3f;
+    [SerializeField]
+    private float awarenessRadius = 10f;
 
-    public bool isAggro = false;
+    public bool isAggro { get; private set; }
+    public bool IsWalking { get; private set; }
+
+    private const string IS_WALKING = "IsWalking";
+    private const string IS_ATTACKING = "Attack";
+
+
     private Transform playersTransform;
     private NavMeshAgent enemyNavMeshAgent;
-    private MeshRenderer meshRenderer;
+
 
     [SerializeField]
-    private float awarenessRadius = 10f; 
+    private Animator animator;
+
 
     private void Start()
     {
-        playersTransform = FindFirstObjectByType<PlayerMovment>().transform;
-        enemyNavMeshAgent = GetComponent<NavMeshAgent>();
-        meshRenderer = GetComponent<MeshRenderer>();
-
-
+        SetComponents();
         enemyNavMeshAgent.stoppingDistance = attackRange;
-
         enemyNavMeshAgent.radius = 2f; 
-        if (normalMat == null)
-            normalMat = meshRenderer.material;
+        
     }
 
     private void Update()
@@ -44,16 +44,61 @@ public class EnemyAi : MonoBehaviour
             isAggro = true;
         }
 
-        
-        if (isAggro)
+
+        if (isAggro && dist > attackRange)
         {
+       
             enemyNavMeshAgent.SetDestination(playersTransform.position);
-            meshRenderer.material = aggroMat;
+
         }
-        else
+
+
+        if (dist <= attackRange)
         {
-            meshRenderer.material = normalMat;
-           
+            AttackPlayer();
+        }
+
+
+        IsWalking = enemyNavMeshAgent.velocity.magnitude > 0.1f;
+        animator.SetBool(IS_WALKING, IsWalking);
+
+    }
+
+
+    private void AttackPlayer()
+    {
+        enemyNavMeshAgent.ResetPath();
+        animator.SetTrigger(IS_ATTACKING);
+    }
+
+
+     private void setComponents()
+    {
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator not found on " + gameObject.name);
+        }
+
+
+    }
+
+
+    public void SetAggro(bool value)
+    {
+        isAggro = value;
+    }
+
+
+
+    private void SetComponents()
+    {
+        playersTransform = FindFirstObjectByType<PlayerMovment>().transform;
+        enemyNavMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator not found on " + gameObject.name);
         }
     }
 }

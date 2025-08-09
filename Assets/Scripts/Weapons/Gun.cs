@@ -30,17 +30,27 @@ public class Gun : Weapon
 
     [SerializeField]
     private LayerMask enemyLayerMask;
-    
 
 
 
+    private const string IS_WALKING = "IsWalking";
+    private const string IS_SHOOTING = "IsShooting";
 
 
+    [SerializeField]
+    private Animator animator ;
+    [SerializeField]
+    private PlayerMovment playerMovement;
+
+
+  
     protected override void Start()
     {
         range = gunRange;
         verticalRange = gunVerticalRange;
+        setComponents();
         base.Start();
+
     }
 
     protected  void Update()
@@ -50,11 +60,13 @@ public class Gun : Weapon
             Fire();
         }
 
+
+        animator.SetBool(IS_WALKING, playerMovement.IsWalking());
+
     }
 
     public override void Fire()
     {
-      
         if (ammo <= 0) {
 
             Debug.Log("I need more buletsssss");
@@ -62,13 +74,15 @@ public class Gun : Weapon
                
         }
 
+        animator.SetTrigger("Shoot");
+
         ammo = Mathf.Max(0, ammo - 1);
 
         Collider[] enemyColliders;
         enemyColliders = Physics.OverlapSphere(transform.position, gunShootRadius, enemyLayerMask);
         foreach(var enemyColider in enemyColliders)
         {
-            enemyColider.GetComponent<EnemyAi>().isAggro = true;
+            enemyColider.GetComponent<EnemyAi>().SetAggro(true) ;
         }
 
         GetComponent<AudioSource>().Stop();
@@ -98,6 +112,7 @@ public class Gun : Weapon
             }
         }
 
+        
         nextFireTime = Time.time + firerate;
     }
 
@@ -115,5 +130,18 @@ public class Gun : Weapon
 
         Debug.Log($"Added {actualAmmo} ammo - Now: {ammo}/{maxAmmo}");
     }
+
+
+    private void setComponents()
+    {
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator not found on " + gameObject.name);
+        }
+
+
+    }
+  
 
 }
