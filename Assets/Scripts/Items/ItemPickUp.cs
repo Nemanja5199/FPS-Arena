@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ItemPickUp;
 
 public class ItemPickUp : MonoBehaviour
 {
@@ -44,6 +45,23 @@ public class ItemPickUp : MonoBehaviour
                 {
                     ph.RestoreArmor(ammount);
                     pickedUp = true;
+                }
+            }
+            else if(itemType == ItemType.Ammo)
+            {
+                Gun gun = other.GetComponentInChildren<Gun>();
+
+                if (gun != null)
+                {
+                    if(gun.GetAmmo() < gun.GetMaxAmmo()) 
+                        {
+                            gun.AddAmmo(ammount);
+                            pickedUp = true;
+                        }
+                }
+                else
+                {
+                    Debug.Log("Gun Not Found");
                 }
             }
             else

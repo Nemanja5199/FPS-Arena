@@ -12,9 +12,17 @@ public class Gun : Weapon
     private float bigDamage = 2f;
     [SerializeField]
     private float smallDamage = 1f;
+
+
+
     private float nextFireTime = 0f;
     [SerializeField]
     private float gunShootRadius = 20f;
+    [SerializeField]
+    private int maxAmmo = 100;
+    [SerializeField]
+    private int ammo = 20;
+
 
 
     [SerializeField]
@@ -41,14 +49,23 @@ public class Gun : Weapon
         {
             Fire();
         }
+
     }
 
     public override void Fire()
     {
+      
+        if (ammo <= 0) {
+
+            Debug.Log("I need more buletsssss");
+            return;
+               
+        }
+
+        ammo = Mathf.Max(0, ammo - 1);
 
         Collider[] enemyColliders;
         enemyColliders = Physics.OverlapSphere(transform.position, gunShootRadius, enemyLayerMask);
-
         foreach(var enemyColider in enemyColliders)
         {
             enemyColider.GetComponent<EnemyAi>().isAggro = true;
@@ -67,18 +84,36 @@ public class Gun : Weapon
                 {
                     float dist = Vector3.Distance(transform.position, enemy.transform.position);
 
-                    if (dist > range * 0.5f)
-                    {
-                        enemy.TakeDamage(smallDamage);
-                    }
-                    else
-                    {
-                        enemy.TakeDamage(bigDamage);
-                    }
+                   
+                        if (dist > range * 0.5f)
+                        {
+                            enemy.TakeDamage(smallDamage);
+                        }
+                        else
+                        {
+                            enemy.TakeDamage(bigDamage);
+                        }
+                    
                 }
             }
         }
 
         nextFireTime = Time.time + firerate;
     }
+
+
+
+
+    public int GetMaxAmmo() => maxAmmo;
+    public int GetAmmo() => ammo;
+
+    public void AddAmmo(int amount)
+    {
+        int oldAmmo = ammo;
+        ammo = Mathf.Min(maxAmmo, ammo + amount);
+        int actualAmmo = ammo - oldAmmo;
+
+        Debug.Log($"Added {actualAmmo} ammo - Now: {ammo}/{maxAmmo}");
+    }
+
 }
