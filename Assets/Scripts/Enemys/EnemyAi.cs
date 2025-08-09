@@ -20,7 +20,7 @@ public class EnemyAi : MonoBehaviour
 
     private void Start()
     {
-        playersTransform = FindFirstObjectByType<PlayerMovment>()?.transform;
+        playersTransform = FindFirstObjectByType<PlayerMovment>().transform;
         enemyNavMeshAgent = GetComponent<NavMeshAgent>();
         meshRenderer = GetComponent<MeshRenderer>();
 
@@ -28,20 +28,17 @@ public class EnemyAi : MonoBehaviour
         enemyNavMeshAgent.stoppingDistance = attackRange;
 
         enemyNavMeshAgent.radius = 2f; 
-        enemyNavMeshAgent.avoidancePriority = Random.Range(40, 60); 
-        enemyNavMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-
         if (normalMat == null)
             normalMat = meshRenderer.material;
     }
 
     private void Update()
     {
+
         if (playersTransform == null) return; 
 
         float dist = Vector3.Distance(transform.position, playersTransform.position);
 
-      
         if (dist < awarenessRadius)
         {
             isAggro = true;

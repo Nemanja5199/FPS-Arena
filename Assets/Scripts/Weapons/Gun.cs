@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Gun : Weapon
 {
@@ -67,7 +67,7 @@ public class Gun : Weapon
 
             if (Physics.Raycast(transform.position, dir, out RaycastHit hit, gunRange * 1.5f, raycastLayerMask))
             {
-                if (hit.transform == enemy.transform)
+                if (hit.transform.root == enemy.transform)
                 {
                     float dist = Vector3.Distance(transform.position, enemy.transform.position);
 

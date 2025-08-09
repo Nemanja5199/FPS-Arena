@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
   
     void Update()
     {
-       if(enemyHealth <= 0)
+        if (enemyHealth <= 0)
         {
 
             Debug.Log($"Enemy {name} has been defeated.");
