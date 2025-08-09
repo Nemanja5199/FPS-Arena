@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        armor = maxArmor;
+        armor = maxArmor; 
 
         if (enableDebugLogs)
         {
@@ -91,7 +91,7 @@ public class PlayerHealth : MonoBehaviour
             }
         }
 
-        // Check for death
+     
         if (health <= 0)
         {
             health = 0;
@@ -113,7 +113,7 @@ public class PlayerHealth : MonoBehaviour
         // - etc.
     }
 
-    // Public methods for other systems (UI, pickups, etc.)
+
     public int GetHealth() => health;
     public int GetMaxHealth() => maxHealth;
     public int GetArmor() => armor;
@@ -125,7 +125,7 @@ public class PlayerHealth : MonoBehaviour
     public bool IsAlive() => health > 0;
     public bool HasArmor() => armor > 0;
 
-    // Methods for pickups/power-ups
+
     public void HealPlayer(int amount)
     {
         int oldHealth = health;
@@ -148,6 +148,17 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.Log($"Restored {actualRestore} armor - Now: {armor}/{maxArmor}");
         }
+    }
+
+
+    public int CurrentHealth()
+    {
+        return health;
+    }
+
+    public int CurrentArrmor()
+    {
+        return armor; 
     }
 
     

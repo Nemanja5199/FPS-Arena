@@ -2,48 +2,42 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    protected BoxCollider weaponCollider;
+    protected Collider weaponCollider;
 
     [SerializeField]
-    protected float range=20f;
+    protected float range = 20f;
     [SerializeField]
     protected float verticalRange = 20f;
     [SerializeField]
-    protected float BoxWidth = 2f;
-
+    protected float boxWidth = 2f;
 
     protected virtual void Start()
     {
-        weaponCollider = GetComponent<BoxCollider>();
-        UpdateCollider();
-    }
-
-    protected virtual void Update()
-    {
-        UpdateCollider();
-    }
-
-    protected void UpdateCollider()
-    {
-        if (weaponCollider != null)
+        weaponCollider = GetComponent<Collider>();
+        if (weaponCollider == null)
         {
-            weaponCollider.size = new Vector3(BoxWidth, verticalRange, range);
-            weaponCollider.center = new Vector3(0, 0, range / 2);
+            Debug.LogWarning("Weapon collider not found on " + gameObject.name);
         }
+        SetupCollider();
     }
 
-
+   
+    protected virtual void SetupCollider()
+    {
+        if (weaponCollider is BoxCollider box)
+        {
+            box.size = new Vector3(boxWidth, verticalRange, range);
+            box.center = new Vector3(0, 0, range / 2);
+        }
+   
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         Enemy enemy = other.GetComponentInParent<Enemy>();
 
         if (enemy != null)
         {
-
-
             if (EnemyManager.Instance != null)
             {
                 EnemyManager.Instance.AddEnemy(enemy);
@@ -57,14 +51,10 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-
-
         Enemy enemy = other.GetComponentInParent<Enemy>();
 
         if (enemy != null)
         {
-
-
             if (EnemyManager.Instance != null)
             {
                 EnemyManager.Instance.RemoveEnemy(enemy);
@@ -76,8 +66,8 @@ public class Weapon : MonoBehaviour
         }
     }
 
-
-    public virtual void Fire() { }
-    
-        
+    public virtual void Fire()
+    {
+      
+    }
 }

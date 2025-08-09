@@ -35,12 +35,8 @@ public class Gun : Weapon
         base.Start();
     }
 
-    protected override void Update()
+    protected  void Update()
     {
-        range = gunRange;
-        verticalRange = gunVerticalRange;
-        base.Update();
-
         if (Input.GetMouseButtonDown(0) && Time.time > nextFireTime)
         {
             Fire();
