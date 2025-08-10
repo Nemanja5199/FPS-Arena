@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
+    [SerializeField]
     private float enemyHealth = 2f;
     [SerializeField]
     private GameObject gunhitEffect;

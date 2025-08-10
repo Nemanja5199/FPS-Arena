@@ -8,6 +8,19 @@ public class EnemyAi : MonoBehaviour
     private float attackRange = 3f;
     [SerializeField]
     private float awarenessRadius = 10f;
+    private float attackCooldown = 1.5f; 
+    [SerializeField] 
+    private int attackDamage = 10;
+
+    private float nextAttackTime = 0f;
+
+
+    [SerializeField]
+    private bool enableDebug = false;
+
+
+    [SerializeField] 
+    private LayerMask attackMask;
 
     public bool isAggro { get; private set; }
     public bool IsWalking { get; private set; }
@@ -68,19 +81,29 @@ public class EnemyAi : MonoBehaviour
     private void AttackPlayer()
     {
         enemyNavMeshAgent.ResetPath();
-        animator.SetTrigger(IS_ATTACKING);
-    }
+        if (Time.time < nextAttackTime) return;
 
 
-     private void setComponents()
-    {
-        animator = GetComponentInChildren<Animator>();
-        if (animator == null)
+        Vector3 dirToPlayer = (playersTransform.position - transform.position).normalized;
+        if(Physics.Raycast(transform.position,dirToPlayer,out  RaycastHit hit,attackRange, attackMask))
         {
-            Debug.LogError("Animator not found on " + gameObject.name);
+            if (enableDebug)
+            {
+                Debug.Log($"Raycast hit: {hit.transform.name}, Layer: {LayerMask.LayerToName(hit.transform.gameObject.layer)}");
+            }
+           
+            if (hit.transform.root == playersTransform)
+            {
+                animator.SetTrigger(IS_ATTACKING);
+
+
+                hit.transform.GetComponent<PlayerHealth>().DamagePlayer(attackDamage);
+                nextAttackTime = Time.time + attackCooldown;
+            }
         }
 
 
+        
     }
 
 
