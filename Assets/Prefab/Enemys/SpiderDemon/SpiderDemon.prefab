@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyHealth: 2
   gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
 --- !u!114 &4029427275770537180
 MonoBehaviour:
@@ -114,6 +115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 10
   awarenessRadius: 5
+  attackDamage: 10
+  enableDebug: 0
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 768
   animator: {fileID: 0}
 --- !u!64 &6226965708718709387
 MeshCollider:
