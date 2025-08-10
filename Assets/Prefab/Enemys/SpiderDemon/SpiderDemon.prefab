@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f98eb5d4320b084caa7d50d59644119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 10
-  awarenessRadius: 5
+  attackRange: 20
+  awarenessRadius: 50
   attackDamage: 10
   enableDebug: 0
   attackMask:

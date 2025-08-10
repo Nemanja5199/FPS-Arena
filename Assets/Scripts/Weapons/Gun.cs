@@ -10,8 +10,7 @@ public class Gun : Weapon
     private float firerate = 0.5f;
     [SerializeField]
     private float bigDamage = 2f;
-    [SerializeField]
-    private float smallDamage = 1f;
+ 
 
 
 
@@ -98,15 +97,10 @@ public class Gun : Weapon
                 {
                     float dist = Vector3.Distance(transform.position, enemy.transform.position);
 
-                   
-                        if (dist > range * 0.5f)
-                        {
-                            enemy.TakeDamage(smallDamage);
-                        }
-                        else
-                        {
+
+                        
                             enemy.TakeDamage(bigDamage);
-                        }
+                        
                     
                 }
             }

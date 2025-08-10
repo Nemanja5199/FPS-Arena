@@ -15,6 +15,11 @@ public class EnemyAi : MonoBehaviour
     private float nextAttackTime = 0f;
 
 
+    [SerializeField] private float roamRadius = 10f;    
+    [SerializeField] private float roamDelay = 2f;
+    private Vector3 startPosition;
+    private float nextRoamTime = 0f;
+
     [SerializeField]
     private bool enableDebug = false;
 
@@ -41,7 +46,9 @@ public class EnemyAi : MonoBehaviour
     {
         SetComponents();
         enemyNavMeshAgent.stoppingDistance = attackRange;
-        enemyNavMeshAgent.radius = 2f; 
+        enemyNavMeshAgent.radius = 2f;
+
+        startPosition = transform.position;
         
     }
 
@@ -53,23 +60,36 @@ public class EnemyAi : MonoBehaviour
         float dist = Vector3.Distance(transform.position, playersTransform.position);
 
         if (dist < awarenessRadius)
-        {
             isAggro = true;
-        }
+        else if (dist > awarenessRadius * 1.5f)
+            isAggro = false;
 
 
         if (isAggro && dist > attackRange)
         {
-       
+            
             enemyNavMeshAgent.SetDestination(playersTransform.position);
 
         }
 
-
-        if (dist <= attackRange)
+        if (!isAggro)
         {
-            AttackPlayer();
+            enemyNavMeshAgent.stoppingDistance = 0.1f;
+            Roam();
+            return; 
         }
+        else
+        {
+            enemyNavMeshAgent.stoppingDistance = attackRange;
+        }
+
+
+
+       
+        if (dist > attackRange)
+            enemyNavMeshAgent.SetDestination(playersTransform.position);
+        else
+            AttackPlayer();
 
 
         IsWalking = enemyNavMeshAgent.velocity.magnitude > 0.1f;
@@ -124,4 +144,34 @@ public class EnemyAi : MonoBehaviour
             Debug.LogError("Animator not found on " + gameObject.name);
         }
     }
+
+
+
+
+    private Vector3 GetRandomPoint(Vector3 center, float radius)
+    {
+        Vector3 randomPos = center + Random.insideUnitSphere * radius;
+        NavMeshHit hit;
+
+        if(NavMesh.SamplePosition(randomPos, out hit, radius, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return center;
+    }
+
+
+    private void Roam()
+    {
+      
+        if (Time.time >= nextRoamTime)
+        {
+            Vector3 roamTarget = GetRandomPoint(startPosition, roamRadius);
+            enemyNavMeshAgent.SetDestination(roamTarget);
+            nextRoamTime = Time.time + roamDelay;
+        }
+        IsWalking = enemyNavMeshAgent.velocity.magnitude > 0.1f;
+        animator.SetBool(IS_WALKING, IsWalking);
+    }
+
 }
