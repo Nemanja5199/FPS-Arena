@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHealth: 2
   gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
+  animator: {fileID: 0}
 --- !u!114 &4029427275770537180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +170,14 @@ PrefabInstance:
     - target: {fileID: 4851807975084567192, guid: d69b55c199dcedb4ba2a26ee76407b78, type: 3}
       propertyPath: m_Name
       value: SpiderVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 7601377890112922334, guid: d69b55c199dcedb4ba2a26ee76407b78, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7601377890112922334, guid: d69b55c199dcedb4ba2a26ee76407b78, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7601377890112922334, guid: d69b55c199dcedb4ba2a26ee76407b78, type: 3}
       propertyPath: m_LocalPosition.x
