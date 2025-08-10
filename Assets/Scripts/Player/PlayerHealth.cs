@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
+    [SerializeField] 
+    private Image healthFillImage;
+    
     [SerializeField]
     private int maxHealth = 100;
     private int health;
@@ -11,6 +15,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     private int maxArmor = 50;
     private int armor;
+    [SerializeField]
+    private Image ArmorFillImage;
 
     [Header("Damage Reduction")]
     [SerializeField]
@@ -24,8 +30,14 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+
+
         health = maxHealth;
-        armor = maxArmor; 
+        armor = maxArmor;
+
+
+        UpdateHealthBar();
+        UpdateArrmorBar();
 
         if (enableDebugLogs)
         {
@@ -68,6 +80,8 @@ public class PlayerHealth : MonoBehaviour
 
             armor -= (int)(damage * armorReductionPercent);
             health -= (int)(damage * (1f - armorReductionPercent));
+            UpdateHealthBar();
+            UpdateArrmorBar();
 
 
             if (enableDebugLogs)
@@ -81,8 +95,12 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-        
-            health -= damage;
+
+            health = Mathf.Max(health - damage, 0);
+
+
+            UpdateHealthBar();
+            UpdateArrmorBar();
 
             if (enableDebugLogs)
             {
@@ -131,6 +149,7 @@ public class PlayerHealth : MonoBehaviour
         int oldHealth = health;
         health = Mathf.Min(maxHealth, health + amount);
         int actualHealing = health - oldHealth;
+        UpdateHealthBar();
 
         if (enableDebugLogs && actualHealing > 0)
         {
@@ -143,6 +162,7 @@ public class PlayerHealth : MonoBehaviour
         int oldArmor = armor;
         armor = Mathf.Min(maxArmor, armor + amount);
         int actualRestore = armor - oldArmor;
+        UpdateArrmorBar();
 
         if (enableDebugLogs && actualRestore > 0)
         {
@@ -161,7 +181,15 @@ public class PlayerHealth : MonoBehaviour
         return armor; 
     }
 
-    
 
-    
+    private void UpdateHealthBar()
+    {
+        healthFillImage.fillAmount = (float)health / maxHealth;
+    }
+
+    private void UpdateArrmorBar()
+    {
+        ArmorFillImage.fillAmount = (float)armor / maxArmor;
+    }
 }
+    
