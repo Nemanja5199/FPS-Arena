@@ -116,6 +116,8 @@ MonoBehaviour:
   attackRange: 20
   awarenessRadius: 50
   attackDamage: 10
+  roamRadius: 20
+  roamDelay: 3
   enableDebug: 0
   attackMask:
     serializedVersion: 2

@@ -46,7 +46,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5940886415812232273}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHealth: 2
   gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
+  animator: {fileID: 0}
 --- !u!114 &970605622599204463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +117,8 @@ MonoBehaviour:
   attackRange: 20
   awarenessRadius: 50
   attackDamage: 10
+  roamRadius: 20
+  roamDelay: 3
   enableDebug: 0
   attackMask:
     serializedVersion: 2
