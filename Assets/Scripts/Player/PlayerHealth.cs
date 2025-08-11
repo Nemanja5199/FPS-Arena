@@ -28,6 +28,11 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     private bool enableDebugLogs = true;
 
+
+    [Header("Flash")]
+    [SerializeField]
+    private DamageFlashEffect damageFlashEffect;
+
     void Start()
     {
 
@@ -48,24 +53,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (health > 0)
-        {
-            // Test damage (you can remove these in final build)
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                DamagePlayer(20);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                DamagePlayer(5);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                DamagePlayer(15);
-            }
-        }
+       
     }
 
     public void DamagePlayer(int damage)
@@ -73,6 +61,11 @@ public class PlayerHealth : MonoBehaviour
         if (enableDebugLogs)
         {
             Debug.Log($"=== TAKING {damage} DAMAGE ===");
+        }
+
+        if (damageFlashEffect != null)
+        {
+            damageFlashEffect.Flash(DamageFlashEffect.FlashType.Damage);
         }
 
         if (armor > 0)
@@ -149,6 +142,7 @@ public class PlayerHealth : MonoBehaviour
         int oldHealth = health;
         health = Mathf.Min(maxHealth, health + amount);
         int actualHealing = health - oldHealth;
+        damageFlashEffect.Flash(DamageFlashEffect.FlashType.Heal);
         UpdateHealthBar();
 
         if (enableDebugLogs && actualHealing > 0)
@@ -162,6 +156,7 @@ public class PlayerHealth : MonoBehaviour
         int oldArmor = armor;
         armor = Mathf.Min(maxArmor, armor + amount);
         int actualRestore = armor - oldArmor;
+        damageFlashEffect.Flash(DamageFlashEffect.FlashType.Arrmor);
         UpdateArrmorBar();
 
         if (enableDebugLogs && actualRestore > 0)
@@ -195,7 +190,10 @@ public class PlayerHealth : MonoBehaviour
     public void MissPenelty(int damage)
     {
         health = Mathf.Max(health - damage, 0);
-
+        if (damageFlashEffect != null)
+        {
+            damageFlashEffect.Flash(DamageFlashEffect.FlashType.Damage);
+        }
 
         UpdateHealthBar();
         UpdateArrmorBar();

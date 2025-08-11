@@ -49,6 +49,7 @@ public class Gun : Weapon
 
 
 
+
     protected override void Start()
     {
         range = gunRange;
@@ -72,14 +73,10 @@ public class Gun : Weapon
 
     public override void Fire()
     {
-        if (ammo <= 0)
-        {
-            Debug.Log("I need more buletsssss");
-            return;
-        }
+     
 
         animator.SetTrigger("Shoot");
-        ammo = Mathf.Max(0, ammo - 1);
+      
 
         Collider[] enemyColliders;
         enemyColliders = Physics.OverlapSphere(transform.position, gunShootRadius, enemyLayerMask);
@@ -88,10 +85,11 @@ public class Gun : Weapon
             enemyColider.GetComponent<EnemyAi>().SetAggro(true);
         }
 
-        GetComponent<AudioSource>().Stop();
-        GetComponent<AudioSource>().Play();
+ 
 
-      
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.gunshotSound);
+
+
         bool hitAnyEnemy = false;
 
         foreach (var enemy in EnemyManager.Instance.Enemies)

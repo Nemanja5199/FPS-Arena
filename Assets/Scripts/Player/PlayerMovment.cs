@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovment : MonoBehaviour
 {
@@ -61,6 +62,7 @@ public class PlayerMovment : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) { rawInput.y -= 1; isAnyKeyPressed = true; }
         if (Input.GetKey(KeyCode.A)) { rawInput.x -= 1; isAnyKeyPressed = true; }
         if (Input.GetKey(KeyCode.D)) { rawInput.x += 1; isAnyKeyPressed = true; }
+        if (Input.GetKey(KeyCode.Escape)) { SceneManager.LoadScene("MainMenu"); }
 
         rawInput = rawInput.normalized;
         inputVector = Vector2.Lerp(inputVector, rawInput, momentum * Time.deltaTime);
@@ -72,6 +74,8 @@ public class PlayerMovment : MonoBehaviour
             idleTimer = 0f;
             isIdle = false;
         }
+
+        
     }
 
     void MovePlayer()
@@ -130,7 +134,7 @@ public class PlayerMovment : MonoBehaviour
         PlayerHealth playerHealth = GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.DamagePlayer(idleDamage);
+            playerHealth.MissPenelty(idleDamage);
             Debug.Log($"Player took {idleDamage} damage for being idle!");
 
            //TODO ADD indication

@@ -4,6 +4,7 @@ public class MouseLook : MonoBehaviour
 {
     [SerializeField] private float sensitivity = 2f;
     [SerializeField] private float smoothing = 1f;
+    [SerializeField] private bool useSettingsValue = true; 
 
     private float yaw;
     private float smoothedMousePos;
@@ -13,6 +14,12 @@ public class MouseLook : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+       
+        if (useSettingsValue)
+        {
+            LoadSensitivityFromSettings();
+        }
     }
 
     void Update()
@@ -29,7 +36,6 @@ public class MouseLook : MonoBehaviour
 
     void ModifyInput()
     {
-   
         smoothedMousePos = Mathf.Lerp(smoothedMousePos, currentMousePos, 1f / smoothing);
     }
 
@@ -38,4 +44,14 @@ public class MouseLook : MonoBehaviour
         yaw += smoothedMousePos * sensitivity;
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
     }
+
+
+    public void LoadSensitivityFromSettings()
+    {
+        sensitivity = PlayerPrefs.GetFloat("MouseSensitivity", sensitivity);
+    }
+
+   
+
+   
 }
