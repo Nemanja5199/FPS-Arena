@@ -4,22 +4,41 @@ using UnityEngine.AI;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemy Settings")]
-    [SerializeField] private GameObject[] enemyFabs;
-    [SerializeField] private int maxEnemis = 20;
+    [SerializeField] 
+    private GameObject[] enemyFabs;
+    [SerializeField] 
+    private int maxEnemis = 20;
+
+
+    [Header("Difficulty Scaling")]
+    [SerializeField]
+    private int baseMaxEnemies = 20; 
+    [SerializeField]
+    private float baseSpawnInterval = 5f;
 
     [Header("Spawn Settings")]
-    [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private float spawnRadius = 20f;
-    [SerializeField] private float minDistanceFromPlayer = 8f;
-    [SerializeField] private int maxSpawnAttempts = 20;
+    [SerializeField] 
+    private float spawnInterval = 5f;
+    [SerializeField] 
+    private float spawnRadius = 20f;
+    [SerializeField] 
+    private float minDistanceFromPlayer = 8f;
+    [SerializeField] 
+    private int maxSpawnAttempts = 20;
 
     [Header("References")]
-    [SerializeField] private Transform player;
-    [SerializeField] private LayerMask visionBlockMask;
+    [SerializeField] 
+    private Transform player;
+    [SerializeField] 
+    private LayerMask visionBlockMask;
 
     [Header("Debug")]
-    [SerializeField] private bool enableDebug = false;
-    [SerializeField] private float debugDrawDuration = 2f;
+    [SerializeField] 
+    private bool enableDebug = false;
+    [SerializeField] 
+    private float debugDrawDuration = 2f;
+    [SerializeField]
+    private int currentDifficultyLevel = 1;
 
     private float spawnTimer;
     private int currentEnemies;
@@ -27,10 +46,13 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         ValidateSetup();
+        baseMaxEnemies = maxEnemis;
+        baseSpawnInterval = spawnInterval;
     }
 
     void Update()
     {
+        UpdateDifficultySettings();
         spawnTimer += Time.deltaTime;
 
         if (currentEnemies < maxEnemis && spawnTimer >= spawnInterval)
@@ -41,6 +63,24 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             spawnTimer = 0f;
         }
+    }
+
+
+    private void UpdateDifficultySettings()
+    {
+        if (DifficultyManager.Instance == null) return;
+
+        currentDifficultyLevel = DifficultyManager.Instance.GetDifficultyLevel();
+
+     
+        int extraEnemies = DifficultyManager.Instance.GetExtraEnemies();
+        maxEnemis = baseMaxEnemies + extraEnemies;
+
+    
+        float spawnMultiplier = DifficultyManager.Instance.GetSpawnRateMultiplier();
+        spawnInterval = baseSpawnInterval / spawnMultiplier;
+
+        spawnInterval = Mathf.Max(spawnInterval, 1.5f);
     }
 
     private void SpawnEnemy()

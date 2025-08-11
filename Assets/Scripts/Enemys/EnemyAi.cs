@@ -100,6 +100,8 @@ public class EnemyAi : MonoBehaviour
 
     private void AttackPlayer()
     {
+
+
         enemyNavMeshAgent.ResetPath();
         if (Time.time < nextAttackTime) return;
 
@@ -116,8 +118,14 @@ public class EnemyAi : MonoBehaviour
             {
                 animator.SetTrigger(IS_ATTACKING);
 
+                int finalDamage = attackDamage;
+                if (DifficultyManager.Instance != null)
+                {
+                    finalDamage = Mathf.RoundToInt(attackDamage * DifficultyManager.Instance.GetDamageMultiplier());
+                }
 
-                hit.transform.GetComponent<PlayerHealth>().DamagePlayer(attackDamage);
+
+                hit.transform.GetComponent<PlayerHealth>().DamagePlayer(finalDamage);
                 nextAttackTime = Time.time + attackCooldown;
             }
         }

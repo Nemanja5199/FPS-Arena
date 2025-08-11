@@ -16,23 +16,21 @@ public class Enemy : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
 
-    // Component references
+
     private Collider[] colliders;
     private NavMeshAgent navAgent;
-    private EnemyAi enemyAI; 
-
+    private EnemyAi enemyAI;
     private bool isDying = false;
     private const string IS_DEAD = "IsDead";
 
     void Start()
     {
-     
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
 
         colliders = GetComponentsInChildren<Collider>();
         navAgent = GetComponent<NavMeshAgent>();
-        enemyAI = GetComponent<EnemyAi>(); 
+        enemyAI = GetComponent<EnemyAi>();
     }
 
     void Update()
@@ -45,7 +43,6 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        
         if (isDying) return;
 
         if (gunhitEffect != null)
@@ -63,18 +60,13 @@ public class Enemy : MonoBehaviour
         isDying = true;
 
         Debug.Log($"Enemy {name} has been defeated.");
-
-    
+        DifficultyManager.Instance.OnEnemyKilled();
         DisableEnemyComponents();
-
-  
         OnEnemyDeath?.Invoke();
 
-   
         if (EnemyManager.Instance != null)
             EnemyManager.Instance.RemoveEnemy(this);
 
- 
         if (animator != null)
         {
             animator.SetBool(IS_DEAD, true);
@@ -82,39 +74,53 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+           
+            HandleLootDrop();
             Destroy(gameObject);
         }
     }
 
     private void DisableEnemyComponents()
     {
-  
         foreach (Collider col in colliders)
         {
             if (col != null)
                 col.enabled = false;
         }
 
-
         if (navAgent != null)
         {
             navAgent.enabled = false;
         }
-
 
         if (enemyAI != null)
         {
             enemyAI.enabled = false;
         }
 
-       
-
-      
         gameObject.tag = "Untagged";
+    }
+
+    private void HandleLootDrop()
+    {
+        Debug.Log($"[Enemy] HandleLootDrop called for {name}");
+
+        EnemyDrops dropComponent = GetComponent<EnemyDrops>();
+        if (dropComponent != null)
+        {
+            Debug.Log($"[Enemy] Found EnemyDrops component, calling DropLoot()");
+            dropComponent.DropLoot();
+        }
+        else
+        {
+            Debug.LogWarning($"[Enemy] No EnemyDrops component found on {name}!");
+        }
     }
 
     IEnumerator WaitForDeathAnimation()
     {
+        Debug.Log($"[Enemy] Starting death animation coroutine for {name}");
+
         // Wait for death animation to start
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         float timeout = 0f;
@@ -130,6 +136,8 @@ public class Enemy : MonoBehaviour
         // If we found the death animation, wait for it to complete
         if (stateInfo.IsName("Death"))
         {
+            Debug.Log($"[Enemy] Playing death animation for {name}");
+
             while (stateInfo.normalizedTime < 0.95f) // 0.95 instead of 1.0 for safety
             {
                 yield return null;
@@ -140,23 +148,26 @@ public class Enemy : MonoBehaviour
                     break;
             }
         }
+        else
+        {
+            Debug.LogWarning($"[Enemy] Death animation state not found for {name}, using fallback delay");
+            
+            yield return new WaitForSeconds(1f);
+        }
 
-        // Add a small delay before destroying (optional, for visual polish)
-        yield return new WaitForSeconds(0.5f);
+     
+        HandleLootDrop();
 
-        // Final cleanup and destroy
+       
+        yield return new WaitForSeconds(0.1f);
+
+        Debug.Log($"[Enemy] Destroying {name}");
+   
         Destroy(gameObject);
     }
 
-  
     public bool IsAlive()
     {
         return !isDying && enemyHealth > 0;
-    }
-
-    // Optional: Clean up event subscriptions when destroyed
-    void OnDestroy()
-    {
-        OnEnemyDeath = null;
     }
 }

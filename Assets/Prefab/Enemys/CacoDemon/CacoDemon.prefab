@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 970605622599204463}
   - component: {fileID: 7893381636495798277}
   - component: {fileID: 5196693563401663721}
+  - component: {fileID: 2059214403550260423}
   m_Layer: 7
   m_Name: CacoDemon
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.98862, y: 1.75, z: 5.66819}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8855132792458021681}
@@ -99,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9bd1f496274f7469d98c9867666fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 2
+  enemyHealth: 20
   gunhitEffect: {fileID: 2299447832066056650, guid: 6fa536680c7072a4f83520738616c468, type: 3}
   animator: {fileID: 0}
 --- !u!114 &970605622599204463
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f98eb5d4320b084caa7d50d59644119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 20
+  attackRange: 10
   awarenessRadius: 50
   attackDamage: 10
   roamRadius: 20
@@ -159,6 +160,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   traget: {fileID: 0}
+--- !u!114 &2059214403550260423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940886415812232273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1275905ad1f94c4783eb9513a7db0c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems:
+  - {fileID: 8601019926487222436, guid: d5001be1abe2a294387a4d394405d37f, type: 3}
+  - {fileID: 5401472857344903144, guid: cc98fce5a0c4e3342a9fa93568cd01b0, type: 3}
+  dropChance: 0.2
+  dropOffset: {x: 0, y: 0.5, z: 0}
+  dropForce: 5
+  addDropEffect: 1
+  despawnTime: 10
+  warningTime: 3
+  enableDespawn: 1
+  debugMode: 1
 --- !u!1001 &2319174915288745530
 PrefabInstance:
   m_ObjectHideFlags: 0
