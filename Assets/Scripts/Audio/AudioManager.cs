@@ -147,10 +147,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
- 
+    public void PauseMusic()
+    {
+        musicSource.Pause();
+    }
 
 
+    public void ResumeMusic()
+    {
+        musicSource.UnPause();
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
+        currentTrackIndex = 0;
+    }
 
 
-   
 }

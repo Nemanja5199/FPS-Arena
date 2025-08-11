@@ -29,9 +29,15 @@ public class PlayerHealth : MonoBehaviour
     private bool enableDebugLogs = true;
 
 
-    [Header("Flash")]
+    [Header("UI")]
     [SerializeField]
     private DamageFlashEffect damageFlashEffect;
+    [SerializeField]
+    private GameObject deathPanel;
+    [SerializeField]
+    private GameObject activeUI;
+
+
 
     void Start()
     {
@@ -116,12 +122,20 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.Log("=== PLAYER DIED ===");
         }
+        deathPanel.SetActive(true);
+        activeUI.SetActive(false);
 
-        // Add your death logic here:
-        // - Play death animation
-        // - Show game over screen
-        // - Respawn player
-        // - etc.
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PauseMusic();
+        }
+
+        DisablePlayerControls();
+
+        Time.timeScale = 0f;
+
     }
 
 
@@ -136,6 +150,25 @@ public class PlayerHealth : MonoBehaviour
     public bool IsAlive() => health > 0;
     public bool HasArmor() => armor > 0;
 
+
+    private void DisablePlayerControls()
+    {
+        
+        MouseLook mouseLook = GetComponentInChildren<MouseLook>();
+        if (mouseLook != null)
+            mouseLook.enabled = false;
+
+        PlayerMovment playerMovement = GetComponent<PlayerMovment>();
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+
+   
+        Gun playerShooting = GetComponentInChildren<Gun>();
+        if (playerShooting != null)
+            playerShooting.enabled = false;
+
+ 
+    }
 
     public void HealPlayer(int amount)
     {
@@ -166,6 +199,8 @@ public class PlayerHealth : MonoBehaviour
     }
 
 
+
+
     public int CurrentHealth()
     {
         return health;
@@ -193,6 +228,12 @@ public class PlayerHealth : MonoBehaviour
         if (damageFlashEffect != null)
         {
             damageFlashEffect.Flash(DamageFlashEffect.FlashType.Damage);
+        }
+
+        if (health <= 0)
+        {
+            health = 0;
+            Die();
         }
 
         UpdateHealthBar();

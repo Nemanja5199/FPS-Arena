@@ -154,7 +154,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 30, y: -240}
-  m_SizeDelta: {x: 500, y: 50}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &31776436
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Shoot : Right Click/Space'
+  m_text: 'Shoot : Right Click'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f747fc862a80a7f4f813df15e81ea83e, type: 2}
   m_sharedMaterial: {fileID: -6103718026836532007, guid: f747fc862a80a7f4f813df15e81ea83e, type: 2}
@@ -2238,7 +2238,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 30, y: -320}
-  m_SizeDelta: {x: 500, y: 50}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &823639701
 MonoBehaviour:
@@ -2260,7 +2260,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Look: Mouse/\u2190 \u2192"
+  m_text: 'Look: Mouse'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f747fc862a80a7f4f813df15e81ea83e, type: 2}
   m_sharedMaterial: {fileID: -6103718026836532007, guid: f747fc862a80a7f4f813df15e81ea83e, type: 2}
