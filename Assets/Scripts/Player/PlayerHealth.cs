@@ -191,5 +191,14 @@ public class PlayerHealth : MonoBehaviour
     {
         ArmorFillImage.fillAmount = (float)armor / maxArmor;
     }
+
+    public void MissPenelty(int damage)
+    {
+        health = Mathf.Max(health - damage, 0);
+
+
+        UpdateHealthBar();
+        UpdateArrmorBar();
+    }
 }
     

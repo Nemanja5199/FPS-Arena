@@ -21,6 +21,9 @@ public class Gun : Weapon
     private int maxAmmo = 100;
     [SerializeField]
     private int ammo = 20;
+    [SerializeField]
+    private int missDamage = 5;
+
 
 
 
@@ -41,8 +44,11 @@ public class Gun : Weapon
     [SerializeField]
     private PlayerMovment playerMovement;
 
+    [SerializeField]
+    private PlayerHealth playerHealth;
 
-  
+
+
     protected override void Start()
     {
         range = gunRange;
@@ -66,47 +72,49 @@ public class Gun : Weapon
 
     public override void Fire()
     {
-        if (ammo <= 0) {
-
+        if (ammo <= 0)
+        {
             Debug.Log("I need more buletsssss");
             return;
-               
         }
 
         animator.SetTrigger("Shoot");
-
         ammo = Mathf.Max(0, ammo - 1);
 
         Collider[] enemyColliders;
         enemyColliders = Physics.OverlapSphere(transform.position, gunShootRadius, enemyLayerMask);
-        foreach(var enemyColider in enemyColliders)
+        foreach (var enemyColider in enemyColliders)
         {
-            enemyColider.GetComponent<EnemyAi>().SetAggro(true) ;
+            enemyColider.GetComponent<EnemyAi>().SetAggro(true);
         }
 
         GetComponent<AudioSource>().Stop();
         GetComponent<AudioSource>().Play();
 
+      
+        bool hitAnyEnemy = false;
+
         foreach (var enemy in EnemyManager.Instance.Enemies)
         {
             var dir = (enemy.transform.position - transform.position).normalized;
-
             if (Physics.Raycast(transform.position, dir, out RaycastHit hit, gunRange * 1.5f, raycastLayerMask))
             {
                 if (hit.transform.root == enemy.transform)
                 {
                     float dist = Vector3.Distance(transform.position, enemy.transform.position);
-
-
-                        
-                            enemy.TakeDamage(bigDamage);
-                        
-                    
+                    enemy.TakeDamage(bigDamage);
+                    hitAnyEnemy = true; 
                 }
             }
         }
 
-        
+      
+        if (!hitAnyEnemy && playerHealth != null)
+        {
+            playerHealth.MissPenelty(missDamage);
+            Debug.Log("Missed all enemies! Taking damage!");
+        }
+
         nextFireTime = Time.time + firerate;
     }
 
@@ -130,9 +138,11 @@ public class Gun : Weapon
     {
         animator = GetComponentInChildren<Animator>();
         if (animator == null)
-        {
+        { 
             Debug.LogError("Animator not found on " + gameObject.name);
         }
+
+        playerHealth = GetComponentInParent<PlayerHealth>();
 
 
     }

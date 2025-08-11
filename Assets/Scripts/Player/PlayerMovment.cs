@@ -4,16 +4,37 @@ using UnityEngine.InputSystem.XR;
 
 public class PlayerMovment : MonoBehaviour
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float gravity = -10f;
-    [SerializeField] private float momentum = 5f;
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Animator camAni;
+    [Header("Movement Settings")]
+    [SerializeField] 
+    private float speed = 5f;
+    [SerializeField] 
+    private float gravity = -10f;
+    [SerializeField] 
+    private float momentum = 5f;
+    [SerializeField] 
+    private Transform cameraTransform;
+    [SerializeField] 
+    private Animator camAni;
+
+    [Header("Idle Damage Settings")]
+    [SerializeField]
+    private bool enableIdleDamage = true;
+    [SerializeField] 
+    private float idleTimeBeforeDamage = 10f; 
+    [SerializeField] 
+    private int idleDamage = 10; 
+    [SerializeField] 
+    private float damageCooldown = 2f; 
 
     private CharacterController characterController;
     private Vector2 inputVector;
     private float verticalVelocity;
     private bool isWalking;
+
+    // Idle tracking
+    private float idleTimer = 0f;
+    private float lastDamageTime = 0f;
+    private bool isIdle = false;
 
     void Awake()
     {
@@ -24,6 +45,11 @@ public class PlayerMovment : MonoBehaviour
     {
         GetInput();
         MovePlayer();
+
+        if (enableIdleDamage)
+        {
+            CheckIdleDamage();
+        }
     }
 
     void GetInput()
@@ -38,8 +64,14 @@ public class PlayerMovment : MonoBehaviour
 
         rawInput = rawInput.normalized;
         inputVector = Vector2.Lerp(inputVector, rawInput, momentum * Time.deltaTime);
-
         isWalking = isAnyKeyPressed;
+
+        // Reset idle timer if moving
+        if (isAnyKeyPressed)
+        {
+            idleTimer = 0f;
+            isIdle = false;
+        }
     }
 
     void MovePlayer()
@@ -67,8 +99,60 @@ public class PlayerMovment : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
+    void CheckIdleDamage()
+    {
+        // If not walking, increment idle timer
+        if (!isWalking)
+        {
+            idleTimer += Time.deltaTime;
+
+            // Check if we've been idle long enough
+            if (idleTimer >= idleTimeBeforeDamage)
+            {
+                if (!isIdle)
+                {
+                    isIdle = true;
+                    Debug.LogWarning("Player is idle! Taking damage!");
+                }
+
+                // Apply damage at intervals
+                if (Time.time - lastDamageTime >= damageCooldown)
+                {
+                    ApplyIdleDamage();
+                    lastDamageTime = Time.time;
+                }
+            }
+        }
+    }
+
+    void ApplyIdleDamage()
+    {
+        PlayerHealth playerHealth = GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.DamagePlayer(idleDamage);
+            Debug.Log($"Player took {idleDamage} damage for being idle!");
+
+           //TODO ADD indication
+        }
+        else
+        {
+            Debug.LogError("PlayerHealth component not found!");
+        }
+    }
+
     public bool IsWalking()
     {
         return isWalking;
+    }
+
+    public bool IsIdle()
+    {
+        return isIdle;
+    }
+
+    public float GetIdleTime()
+    {
+        return idleTimer;
     }
 }
