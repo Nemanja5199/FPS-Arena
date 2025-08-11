@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c028418e64ff1498538d278e88c1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammount: 20
+  ammount: 30
   itemType: 1
 --- !u!114 &686096855341332959
 MonoBehaviour:

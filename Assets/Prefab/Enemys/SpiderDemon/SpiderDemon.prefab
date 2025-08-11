@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 30
   awarenessRadius: 50
-  attackDamage: 5
+  attackDamage: 8
   roamRadius: 20
   roamDelay: 3
   enableDebug: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   dropItems:
   - {fileID: 8601019926487222436, guid: d5001be1abe2a294387a4d394405d37f, type: 3}
   - {fileID: 5401472857344903144, guid: cc98fce5a0c4e3342a9fa93568cd01b0, type: 3}
-  dropChance: 0.1
+  dropChance: 0.35
   dropOffset: {x: 0, y: 0.5, z: 0}
   dropForce: 5
   addDropEffect: 1
